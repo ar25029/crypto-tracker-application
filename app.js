@@ -1,6 +1,7 @@
 // api request options
 const options = {
   method: "GET",
+  mode: "no-cors",
   headers: {
     accept: "application/json",
     "x-cg-demo-api-key": "CG-mDVVqLm5xBDjvcVq523LnAmB",
@@ -81,6 +82,7 @@ const handlePreButtonClick = async () => {
   await fetchCoins(currentPage);
   renderCoins(coins, currentPage, 25);
   updatePaginationControls();
+  selectedPageNo.textContent = `${currentPage}`;
 };
 
 // handle next button
@@ -89,15 +91,22 @@ const handleNextButtonClick = async () => {
   await fetchCoins(currentPage);
   renderCoins(coins, currentPage, 25);
   updatePaginationControls();
+  selectedPageNo.textContent = `${currentPage}`;
 };
 
 const preBtn = document.querySelector(".pre-btn");
 const nextBtn = document.querySelector(".next-btn");
+const selectedPageNo = document.querySelector(".selected-page");
+
 const updatePaginationControls = () => {
-  // preBtn.disabled = currentPage === 1;
+  preBtn.disabled = currentPage === 1;
   // nextBtn.disabled = coins.length < 25;
 };
-document.addEventListener("DOMContentLoaded", initializePage);
+document.addEventListener("DOMContentLoaded", () => {
+  initializePage();
+  updatePaginationControls();
+  selectedPageNo.textContent = `${currentPage}`;
+});
 
 preBtn.addEventListener("click", handlePreButtonClick);
 nextBtn.addEventListener("click", handleNextButtonClick);
