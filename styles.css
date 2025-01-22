@@ -60,13 +60,25 @@ nav {
   padding: 0.1em;
   margin-top: 1em;
   text-align: center;
-  border: 1px solid black;
   border-collapse: collapse;
-  border-radius: 1em;
+  background: #fff;
+}
+
+.table tr th {
+  padding: 0.5em;
+  transition: backgroung-color 0.7s ease;
+}
+
+.table tr {
+  transition: background-color 0.4s ease;
+}
+
+.table tr:hover {
+  background-color: #aaa;
 }
 
 .pagination-control {
-  margin-top: 1em;
+  margin: 1em 0 3em 0;
   padding: 5px;
   display: flex;
   column-gap: 0.4em;
@@ -83,7 +95,7 @@ nav {
 .pagination-control button {
   width: 80px;
   border: none;
-  background: grey;
+  background: #fc821f;
   padding: 10px 15px;
   color: white;
   border-radius: 5px;

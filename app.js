@@ -1,7 +1,6 @@
 // api request options
 const options = {
   method: "GET",
-  mode: "no-cors",
   headers: {
     accept: "application/json",
     "x-cg-demo-api-key": "CG-mDVVqLm5xBDjvcVq523LnAmB",
@@ -78,16 +77,18 @@ const renderCoinRow = (coin, index, start) => {
 
 // handle previous button
 const handlePreButtonClick = async () => {
-  currentPage = currentPage - 1;
-  await fetchCoins(currentPage);
-  renderCoins(coins, currentPage, 25);
-  updatePaginationControls();
-  selectedPageNo.textContent = `${currentPage}`;
+  if (currentPage > 1) {
+    currentPage--;
+    await fetchCoins(currentPage);
+    renderCoins(coins, currentPage, 25);
+    updatePaginationControls();
+    selectedPageNo.textContent = `${currentPage}`;
+  }
 };
 
 // handle next button
 const handleNextButtonClick = async () => {
-  currentPage = currentPage + 1;
+  currentPage++;
   await fetchCoins(currentPage);
   renderCoins(coins, currentPage, 25);
   updatePaginationControls();
@@ -100,6 +101,7 @@ const selectedPageNo = document.querySelector(".selected-page");
 
 const updatePaginationControls = () => {
   preBtn.disabled = currentPage === 1;
+  preBtn.style.backgroundColor = `${currentPage === 1 ? "grey" : ""}`;
   // nextBtn.disabled = coins.length < 25;
 };
 document.addEventListener("DOMContentLoaded", () => {
@@ -110,3 +112,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
 preBtn.addEventListener("click", handlePreButtonClick);
 nextBtn.addEventListener("click", handleNextButtonClick);
+
+// this theree function is just an example already created a single function for all three
+// const sortCoinByPrice = (order) => {
+//   coins.sort((a, b) => {
+//     order === "asc"
+//       ? a.current_price - b.current_price
+//       : b.current_price - a.current_price;
+//   });
+//   renderCoins(coins, currentPage, 25);
+// };
+// const sortCoinByVolume = (order) => {
+//   coins.sort((a, b) => {
+//     order === "asc"
+//       ? a.total_volume - b.total_volume
+//       : b.total_volume - a.total_volume;
+//   });
+//   renderCoins(coins, currentPage, 25);
+// };
+// const sortCoinByMarket = (order) => {
+//   coins.sort((a, b) => {
+//     order === "asc" ? a.market_cap - b.market_cap : b.market_cap - a.market_cap;
+//   });
+//   renderCoins(coins, currentPage, 25);
+// };
+
+// instead of creating separate function for sorting we created generic function for all
+const sortCoinByField = (field, order) => {
+  coins.sort((a, b) =>
+    order === "asc" ? a[field] - b[field] : b[field] - a[field]
+  );
+  renderCoins(coins, currentPage, 25);
+};
+
+document
+  .querySelector("#sort-price-asc")
+  .addEventListener("click", () => sortCoinByField("current_price", "asc"));
+document
+  .querySelector("#sort-price-dsc")
+  .addEventListener("click", () => sortCoinByField("current_price", "dsc"));
+document
+  .querySelector("#sort-volume-asc")
+  .addEventListener("click", () => sortCoinByField("total_volume", "asc"));
+document
+  .querySelector("#sort-volume-dsc")
+  .addEventListener("click", () => sortCoinByField("total_volume", "dsc"));
+document
+  .querySelector("#sort-market-asc")
+  .addEventListener("click", () => sortCoinByField("market_cap", "asc"));
+document
+  .querySelector("#sort-market-dsc")
+  .addEventListener("click", () => sortCoinByField("market_cap", "dsc"));
