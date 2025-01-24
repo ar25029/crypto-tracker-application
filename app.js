@@ -163,3 +163,76 @@ document
 document
   .querySelector("#sort-market-dsc")
   .addEventListener("click", () => sortCoinByField("market_cap", "dsc"));
+
+// search functionality added here
+const handleSearchInput = async () => {
+  const searchTerm = document.getElementById("search-box").value.trim();
+  if (searchTerm) {
+    document.querySelector(".dialog-box").style.display = "block";
+    const result = await fetchSearchResults(searchTerm);
+    showSearchResults(result);
+  } else {
+    closeSearchDialog();
+  }
+};
+
+const fetchSearchResults = async (query) => {
+  try {
+    const response = await fetch(
+      `https://api.coingecko.com/api/v3/search?query=${query}`
+    );
+    const data = await response.json();
+    return data.coins;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+const showSearchResults = (searchedCoins) => {
+  console.log(searchedCoins);
+
+  const searchResultEle = document.querySelector(".search-results");
+
+  searchResultEle.innerHTML = "";
+
+  if (searchedCoins.length < 1) {
+    searchResultEle.innerHTML = `
+      <p>no such result</p>
+    `;
+  }
+  // we can show the 5 result at a time using slice
+  // searchedCoins.slice(0, 5).forEach((coin) => {
+  //   const searchRow = showSearchRow(coin);
+  //   searchResultEle.appendChild(searchRow);
+  // });
+  searchedCoins.forEach((coin) => {
+    const searchRow = showSearchRow(coin);
+    searchResultEle.appendChild(searchRow);
+  });
+};
+
+function showSearchRow(coin) {
+  const liEle = document.createElement("li");
+  liEle.classList.add("search-data");
+  liEle.innerHTML = `
+      <img src=${coin.thumb} alt=${coin.name} width="22" height="22"/>
+      <p>${coin.name}</p>
+  `;
+  return liEle;
+}
+
+const closeSearchDialog = () => {
+  const searchDialog = document.querySelector("#search-dialog");
+  searchDialog.style.display = "none";
+};
+
+const searchInput = document
+  .getElementById("search-box")
+  .addEventListener("input", handleSearchInput);
+const searchIcon = document
+  .getElementById("search-icon")
+  .addEventListener("click", handleSearchInput);
+const closeDialog = document
+  .getElementById("close-dialog")
+  .addEventListener("click", closeSearchDialog);

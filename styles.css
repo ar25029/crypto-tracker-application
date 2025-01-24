@@ -55,6 +55,58 @@ nav {
   color: black;
 }
 
+.dialog-box {
+  display: none;
+  position: absolute;
+  width: 12em;
+  height: auto;
+  border-radius: 5px;
+  padding: 0.1em;
+  background-color: #eee;
+  top: 3.5em;
+}
+
+.dialog-box ul {
+  list-style-type: none;
+  overflow-y: auto;
+  height: auto;
+  max-height: 250px;
+  margin: 0;
+  padding: 0 10px;
+}
+
+.dialog-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 5px;
+}
+
+.dialog-content h3 {
+  font-size: small;
+}
+
+.dialog-content span {
+  font-size: large;
+  cursor: pointer;
+}
+
+.search-results li {
+  list-style-type: none;
+  padding: 0;
+}
+
+.search-results p{
+  font-size: 0.9em;
+}
+
+.search-data {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .table {
   width: 100%;
   padding: 0.1em;
@@ -66,7 +118,7 @@ nav {
 
 .table tr th {
   padding: 0.5em;
-  transition: backgroung-color 0.7s ease;
+  background-color: #eee;
 }
 
 .table tr {
@@ -74,7 +126,7 @@ nav {
 }
 
 .table tr:hover {
-  background-color: #aaa;
+  background-color: #e5e9e7;
 }
 
 .pagination-control {

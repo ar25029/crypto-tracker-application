@@ -26,9 +26,16 @@
             placeholder="Search coin..."
             autocomplete=" off"
           />
-          <i class="fa-solid fa-magnifying-glass"></i>
+          <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
           <div class="dialog-box" id="search-dialog">
             <!-- list of search item will be displayed here -->
+            <div class="dialog-content">
+              <h3>Search Results</h3>
+              <span id="close-dialog" class="close-btn">&times;</span>
+            </div>
+            <ul class="search-results">
+              <!-- search result will be populated here -->
+            </ul>
           </div>
         </div>
       </div>
