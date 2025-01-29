@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="coin.css" />
+    <script
+      src="https://kit.fontawesome.com/856e998fae.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Coin Details</title>
+  </head>
+  <body>
+    <nav class="nav-bar">
+      <div class="left-nav">
+        <a href="index.html">CRYPTO TRACKER</a>
+      </div>
+      <div class="right-nav">
+        <a href="index.html">Home</a>
+        <a href="index.html">Liked Coins</a>
+        <div class="search-container" role="search">
+          <input
+            type="text"
+            id="search-box"
+            placeholder="Search coin..."
+            autocomplete=" off"
+          />
+          <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+          <div class="dialog-box" id="search-dialog">
+            <!-- list of search item will be displayed here -->
+            <div class="dialog-content">
+              <h3>Search Results</h3>
+              <span id="close-dialog" class="close-btn">&times;</span>
+            </div>
+            <ul class="search-results">
+              <!-- search result will be populated here -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="shimmer-container">
+      <i class="shimmer fa-solid fa-arrows-rotate"></i>
+    </div>
+    <div id="coin-container" class="container">
+      <div class="sidebar" id="sidebar">
+        <img
+          id="coin-image"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR49cXPOUUOQt8w_T1kOSnUAsspfeTnJglulQ&s"
+          alt="bitcoin"
+        />
+        <h3 id="coin-name">Coin name</h3>
+        <p id="coin-description">Coin Description</p>
+        <div class="market-data" id="market-data">
+          <div class="market-data-item">
+            <span class="heading">Rank</span>
+            <span id="coin-rank"></span>
+          </div>
+          <div class="market-data-item">
+            <span class="heading">Current Price</span>
+            <span id="coin-price"></span>
+          </div>
+          <div class="market-data-item">
+            <span class="heading">Market Cap</span>
+            <span id="coin-market-cap"></span>
+          </div>
+          <div class="button-wrapper">
+            <button class="add-to-fav-btn">Add to Favorite</button>
+          </div>
+        </div>
+      </div>
+      <div class="chart-section" id="chart-section">
+        <div class="btn-container">
+          <button id="24h">24h</button>
+          <button id="30d">30d</button>
+          <button id="3m">3m</button>
+        </div>
+        <canvas id="coinChart"></canvas>
+      </div>
+    </div>
+    <script src="coin.js"></script>
+  </body>
+</html>

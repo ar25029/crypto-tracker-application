@@ -1,0 +1,79 @@
+.container {
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+}
+
+.sidebar {
+    width: 35%;
+    height: auto;
+    text-align: center;
+}
+
+#coin-image {
+    width: 250px;
+    height: 250px;
+}
+
+.sidebar h3 {
+    font-size: 1em;
+}
+
+.sidebar p {
+    text-align: left;
+    font-size: 0.8em;
+}
+
+.market-data {
+    width: 100%;
+}
+
+.market-data-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4em 0.5em;
+}
+
+.market-data-item .heading {
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+.button-wrapper {
+    margin-top: 1em;
+}
+
+.button-wrapper button {
+    border: none;
+    background: orange;
+    padding: 0.7em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.button-wrapper button:hover {
+    background-color: darkorange;
+    color: #565454;
+
+}
+
+.chart-section {
+    width: 65%;
+    background-color: red;
+}
+
+.btn-container {
+    display: flex;
+    flex-basis: 1;
+    justify-content: center;
+    column-gap: 1.3em;
+}
+
+.btn-container button {
+    width: 40px;
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+}
