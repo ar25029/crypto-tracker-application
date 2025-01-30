@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   async function fetchCoinData() {
-    showShimmer();
     try {
+      showShimmer();
       const response = await fetch(
         `https://api.coingecko.com/api/v3/coins/${coinId}`,
         options
