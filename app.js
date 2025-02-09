@@ -52,6 +52,7 @@ function renderCoins(coinsToDisplay, page, itemPerPage) {
 
   coinsToDisplay.forEach((coin, index) => {
     const row = renderCoinRow(coin, index, start);
+    attachRowEvents(row, coin.id);
     tableBody.appendChild(row);
   });
 }
@@ -74,6 +75,18 @@ const renderCoinRow = (coin, index, start) => {
   `;
   return row;
 };
+
+function attachRowEvents(row, coinId) {
+  row.addEventListener("click", (events) => {
+    if (!events.target.classList.contains("favorite-icon")) {
+      window.location.href = `coin.html?id=${coinId}`;
+    }
+  });
+  row.querySelector(".favorite-icon").addEventListener("click", (event) => {
+    event.stopPropagation();
+    handleFavoriteClick(coinId);
+  });
+}
 
 // handle previous button
 const handlePreButtonClick = async () => {
@@ -209,6 +222,13 @@ const showSearchResults = (searchedCoins) => {
   searchedCoins.forEach((coin) => {
     const searchRow = showSearchRow(coin);
     searchResultEle.appendChild(searchRow);
+  });
+
+  searchResultEle.querySelectorAll("li").forEach((item) => {
+    item.addEventListener("click", (event) => {
+      const coinId = event.currentTarget.dataset.id;
+      window.location.href = `coin.html?id=${coinId}`;
+    });
   });
 };
 

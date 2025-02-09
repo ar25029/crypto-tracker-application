@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     },
   };
 
+  const shimmerContainer = document.querySelector(".shimmer-container");
   const coinContainer = document.getElementById("coin-container");
-  const shimmerContainer = document.querySelector("shimmer-container");
   const coinImage = document.getElementById("coin-image");
   const coinName = document.getElementById("coin-name");
   const coinDescription = document.getElementById("coin-description");
@@ -45,6 +45,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         options
       );
       const data = await response.json();
+      console.log(data);
+
       displayCoinData(data);
     } catch (error) {
       console.log(error);
@@ -59,9 +61,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     coinName.textContent = coin.name;
     coinDescription.textContent = coin.description.en.split(". ")[0] + ".";
     coinRank.textContent = coin.market_cap_rank;
-    coinPrice.textContent = coin.market_data.current_price.usd.toLocaleString();
+    coinPrice.textContent =
+      "$" + coin.market_data.current_price.usd.toLocaleString();
     coinMarketCap.textContent =
-      coin.market_data.market_cap.usd.toLocaleString();
+      "$" + coin.market_data.market_cap.usd.toLocaleString();
 
     const favorites = [];
     if (favorites.includes(coinId)) {
@@ -72,4 +75,80 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   await fetchCoinData();
+
+  const ctx = document.getElementById("coinChart").getContext("2d");
+  const coinChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: "price (USD)",
+          data: [],
+          borderColor: "#229ef1",
+          full: false,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          display: true,
+        },
+        y: {
+          display: true,
+          beginAtZero: false,
+          ticks: {
+            callback: function (value) {
+              return `$${value}`;
+            },
+          },
+        },
+      },
+      plugins: {
+        tooltips: {
+          callbacks: {
+            label: function (context) {
+              return `$${context.parsed.y}`;
+            },
+          },
+        },
+      },
+    },
+  });
+
+  async function fetchChartData(days) {
+    try {
+      const response = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${days}`
+      );
+      const data = await response.json();
+      updataChart(data.prices);
+    } catch (err) {
+      console.log("No such values", err);
+    }
+  }
+
+  function updataChart(prices) {
+    const labels = prices.map((price) => {
+      let date = new Date(price[0]);
+      return date.toLocaleDateString();
+    });
+    const data = prices.map((price) => price[1]);
+    coinChart.data.labels = labels;
+    coinChart.data.datasets[0].data = data;
+    coinChart.update();
+  }
+  const buttons = document.querySelectorAll(".btn-container button");
+  buttons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      buttons.forEach((btn) => btn.classList.remove("active"));
+      event.target.classList.add("active");
+      const days =
+        event.target.id === "24h" ? 1 : event.target.id === "30d" ? 30 : 90;
+      fetchChartData(days);
+    });
+  });
+  document.getElementById("24h").click();
 });
