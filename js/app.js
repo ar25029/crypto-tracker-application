@@ -47,18 +47,19 @@ const fetchCoins = async (page = 1) => {
 
 function renderCoins(coinsToDisplay, page, itemPerPage) {
   const start = (page - 1) * itemPerPage + 1;
+  const favorites = getFavorite();
   const tableBody = document.querySelector("#crypto-table tbody");
   tableBody.innerHTML = ``;
 
   coinsToDisplay.forEach((coin, index) => {
-    const row = renderCoinRow(coin, index, start);
+    const row = renderCoinRow(coin, index, start, favorites);
     attachRowEvents(row, coin.id);
     tableBody.appendChild(row);
   });
 }
 
-const renderCoinRow = (coin, index, start) => {
-  const isFavorite = false;
+const renderCoinRow = (coin, index, start, favorites) => {
+  const isFavorite = favorites.includes(coin.id);
   const row = document.createElement("tr");
   row.innerHTML = `
     <td>${start + index}</td>
@@ -69,7 +70,7 @@ const renderCoinRow = (coin, index, start) => {
     <td>$${coin.market_cap.toLocaleString()}</td>
     <td>
     <i class="fas fa-star favorite-icon ${
-      isFavorite ? "favorite" : ""
+      isFavorite ? "favorite" : " "
     }" data-id="${coin.id}"></i>
     </td>
   `;
@@ -227,6 +228,7 @@ const showSearchResults = (searchedCoins) => {
   searchResultEle.querySelectorAll("li").forEach((item) => {
     item.addEventListener("click", (event) => {
       const coinId = event.currentTarget.dataset.id;
+      console.log(coinId);
       window.location.href = `coin.html?id=${coinId}`;
     });
   });
@@ -235,6 +237,7 @@ const showSearchResults = (searchedCoins) => {
 function showSearchRow(coin) {
   const liEle = document.createElement("li");
   liEle.classList.add("search-data");
+  liEle.dataset.id = coin.id;
   liEle.innerHTML = `
       <img src=${coin.thumb} alt=${coin.name} width="22" height="22"/>
       <p>${coin.name}</p>
@@ -256,3 +259,24 @@ const searchIcon = document
 const closeDialog = document
   .getElementById("close-dialog")
   .addEventListener("click", closeSearchDialog);
+
+const getFavorite = () => JSON.parse(localStorage.getItem("favorites")) || [];
+
+const saveFavorite = (favorites) => {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+};
+const handleFavoriteClick = (coinId) => {
+  const favorites = toggleFavorite(coinId);
+  saveFavorite(favorites);
+  renderCoins(coins, currentPage, 25);
+};
+
+const toggleFavorite = (coinId) => {
+  let favorites = getFavorite();
+  if (favorites.includes(coinId)) {
+    favorites = favorites.filter((id) => id !== coinId);
+  } else {
+    favorites.push(coinId);
+  }
+  return favorites;
+};
