@@ -45,8 +45,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         options
       );
       const data = await response.json();
-      console.log(data);
-
       displayCoinData(data);
     } catch (error) {
       console.log(error);
@@ -54,6 +52,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       hideShimmer();
     }
   }
+
+  const getFavorite = () => JSON.parse(localStorage.getItem("favorites")) || [];
+
+  const saveFavorite = (favorites) => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  };
+  const handleFavoriteClick = (coinId) => {
+    const favorites = toggleFavorite(coinId);
+    saveFavorite(favorites);
+    addfavBtn.textContent = favorites.includes(coinId)
+      ? "Remove from favorite"
+      : "Add to favorite";
+  };
+
+  const toggleFavorite = (coinId) => {
+    let favorites = getFavorite();
+    if (favorites.includes(coinId)) {
+      favorites = favorites.filter((id) => id !== coinId);
+    } else {
+      favorites.push(coinId);
+    }
+    return favorites;
+  };
 
   function displayCoinData(coin) {
     coinImage.src = coin.image.large;
@@ -151,4 +172,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
   document.getElementById("24h").click();
+  addfavBtn.addEventListener("click", handleFavoriteClick);
 });

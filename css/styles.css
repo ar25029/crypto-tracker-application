@@ -167,7 +167,7 @@ nav {
 }
 
 .favorite-icon:hover,
-.favorite-icon .favorite {
+.favorite-icon.favorite {
   color: gold;
 }
 

@@ -89,6 +89,27 @@ function attachRowEvents(row, coinId) {
   });
 }
 
+const getFavorite = () => JSON.parse(localStorage.getItem("favorites")) || [];
+
+const saveFavorite = (favorites) => {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+};
+const handleFavoriteClick = (coinId) => {
+  const favorites = toggleFavorite(coinId);
+  saveFavorite(favorites);
+  renderCoins(coins, currentPage, 25);
+};
+
+const toggleFavorite = (coinId) => {
+  let favorites = getFavorite();
+  if (favorites.includes(coinId)) {
+    favorites = favorites.filter((id) => id !== coinId);
+  } else {
+    favorites.push(coinId);
+  }
+  return favorites;
+};
+
 // handle previous button
 const handlePreButtonClick = async () => {
   if (currentPage > 1) {
@@ -198,14 +219,11 @@ const fetchSearchResults = async (query) => {
     const data = await response.json();
     return data.coins;
   } catch (error) {
-    console.log(error);
     return [];
   }
 };
 
 const showSearchResults = (searchedCoins) => {
-  console.log(searchedCoins);
-
   const searchResultEle = document.querySelector(".search-results");
 
   searchResultEle.innerHTML = "";
@@ -228,7 +246,6 @@ const showSearchResults = (searchedCoins) => {
   searchResultEle.querySelectorAll("li").forEach((item) => {
     item.addEventListener("click", (event) => {
       const coinId = event.currentTarget.dataset.id;
-      console.log(coinId);
       window.location.href = `coin.html?id=${coinId}`;
     });
   });
@@ -259,24 +276,3 @@ const searchIcon = document
 const closeDialog = document
   .getElementById("close-dialog")
   .addEventListener("click", closeSearchDialog);
-
-const getFavorite = () => JSON.parse(localStorage.getItem("favorites")) || [];
-
-const saveFavorite = (favorites) => {
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-};
-const handleFavoriteClick = (coinId) => {
-  const favorites = toggleFavorite(coinId);
-  saveFavorite(favorites);
-  renderCoins(coins, currentPage, 25);
-};
-
-const toggleFavorite = (coinId) => {
-  let favorites = getFavorite();
-  if (favorites.includes(coinId)) {
-    favorites = favorites.filter((id) => id !== coinId);
-  } else {
-    favorites.push(coinId);
-  }
-  return favorites;
-};
