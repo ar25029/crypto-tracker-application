@@ -1,16 +1,5 @@
 let coin = [];
 let currPage = 1;
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    "x-cg-demo-api-key": "CG-mDVVqLm5xBDjvcVq523LnAmB",
-  },
-};
-
-const getFavorite = () => {
-  return JSON.parse(localStorage.getItem("favorites")) || [];
-};
 
 const fetchFavoriteCoins = async (ids) => {
   try {
